@@ -35,6 +35,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
+			'class' => 'system.db.CDbConnection',
 			'connectionString' => 'mysql:host=192.168.100.108;dbname=rest',
 			'emulatePrepare' => true,
 			'username' => 'webconnect',
