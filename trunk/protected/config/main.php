@@ -18,6 +18,18 @@ return array(
 		'application.components.*',
 	),
 
+	'modules'=>array(
+		// uncomment the following to enable the Gii tool
+		
+		'gii'=>array(
+			'class'=>'system.gii.GiiModule',
+			'password'=>'123456',
+			// If removed, Gii defaults to localhost only. Edit carefully to taste.
+			'ipFilters'=>array('127.0.0.1','::1'),
+		),
+		'admin',
+	),
+
 	'defaultController'=>'post',
 
 	// application components
@@ -50,16 +62,31 @@ return array(
         ),
         'urlManager'=>array(
         	'urlFormat'=>'path',
+			'showScriptName'=>true,    // 将代码里链接的index.php隐藏掉
         	'rules'=>array(
-                        'post/<id:\d+>/<title:.*?>'=>'post/view',
-                        'posts/<tag:.*?>'=>'post/index',
-                        // REST patterns
-                        array('api/list', 'pattern'=>'api/<model:\w+>', 'verb'=>'GET'),
-                        array('api/view', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
-                        array('api/update', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),  // Update
-                        array('api/delete', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
-                        array('api/create', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'), // Create
-                        '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+						'post/<id:\d+>/<title:.*?>'=>'post/view',
+						'posts/<tag:.*?>'=>'post/index',
+						//Gii启用所需规则
+						'gii'=>'gii',
+						'gii/<controller:\w+>'=>'gii/<controller>',
+						'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
+						// REST patterns
+						array('api/list', 'pattern'=>'api/<model:\w+>', 'verb'=>'GET'),
+						array('api/view', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('api/update', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('api/delete', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('api/create', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
+						array('user/list', 'pattern'=>'user/<model:\w+>', 'verb'=>'GET'),
+						array('user/create', 'pattern'=>'user/<model:\w+>', 'verb'=>'POST'),
+						array('user/view', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('user/update', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('user/delete', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						// Other controllers
+						'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+						//去除index.php后的新规则
+						'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+						'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+						'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
         	),
         ),
 		'log'=>array(
