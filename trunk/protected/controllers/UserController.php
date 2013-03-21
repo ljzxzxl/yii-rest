@@ -37,7 +37,7 @@ class UserController extends Controller
                 $models = User::model()->findAll();
                 break; // }}} 
             default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or wrong request method',$_GET['model']) );
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
         if(is_null($models)) {
@@ -70,7 +70,7 @@ class UserController extends Controller
                 $model = User::model()->findByPk($_GET['id']);
                 break; // }}} 
             default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or wrong request method',$_GET['model']) );
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
         if(is_null($model)) {
@@ -97,7 +97,7 @@ class UserController extends Controller
                 $model = new User;                    
                 break; // }}} 
             default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or wrong request method',$_GET['model']) );
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
         // Try to assign POST values to attributes
@@ -156,7 +156,7 @@ class UserController extends Controller
                 $model = User::model()->findByPk($_GET['id']);                    
                 break; // }}} 
             default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or wrong request method',$_GET['model']) );
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
         if(is_null($model))
@@ -209,7 +209,7 @@ class UserController extends Controller
                 $model = User::model()->findByPk($_GET['id']);                    
                 break; // }}} 
             default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or wrong request method',$_GET['model']) );
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
         // Was a model found?
