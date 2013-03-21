@@ -30,7 +30,7 @@ return array(
 		'admin',
 	),
 
-	'defaultController'=>'post',
+	'defaultController'=>'user',
 
 	// application components
 	'components'=>array(
@@ -62,7 +62,7 @@ return array(
         ),
         'urlManager'=>array(
         	'urlFormat'=>'path',
-			'showScriptName'=>true,    // 将代码里链接的index.php隐藏掉
+			'showScriptName'=>false,    // 将代码里链接的index.php隐藏掉
         	'rules'=>array(
 						'post/<id:\d+>/<title:.*?>'=>'post/view',
 						'posts/<tag:.*?>'=>'post/index',
