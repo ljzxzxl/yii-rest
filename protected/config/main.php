@@ -53,7 +53,7 @@ return array(
 			'username' => 'webconnect',
 			'password' => '123456',
 			'charset' => 'utf8',
-			'tablePrefix' => 'tbl_',
+			'tablePrefix' => 'yxz_',
 		),
 		
 		'errorHandler'=>array(
@@ -62,22 +62,15 @@ return array(
         ),
         'urlManager'=>array(
         	'urlFormat'=>'path',
-			'showScriptName'=>false,    // 将代码里链接的index.php隐藏掉
+			'showScriptName'=>false,    //是否显示URL中的index.php
         	'rules'=>array(
-						'post/<id:\d+>/<title:.*?>'=>'post/view',
-						'posts/<tag:.*?>'=>'post/index',
 						//Gii启用所需规则
 						'gii'=>'gii',
 						'gii/<controller:\w+>'=>'gii/<controller>',
 						'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
 						// REST patterns
-						array('api/list', 'pattern'=>'api/<model:\w+>', 'verb'=>'GET'),
-						array('api/view', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
-						array('api/update', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
-						array('api/delete', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
-						array('api/create', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
 						array('user/list', 'pattern'=>'user/<model:\w+>', 'verb'=>'GET'),
-						array('user/create', 'pattern'=>'user/<model:\w+>', 'verb'=>'POST'),
+						array('user/post', 'pattern'=>'user/<model:\w+>', 'verb'=>'POST'),
 						array('user/view', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('user/update', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('user/delete', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),

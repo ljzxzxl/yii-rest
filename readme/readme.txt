@@ -11,4 +11,6 @@ http://localhost/yii-rest/index.php/user/delete/1	DELETE
 
 测试用例新增用户请求Body内容
 
-{"user_name":"fff","user_type":"6","email":"test@gmail.com","password":"123456","password_salt":"1","group_id":"1"}
+{"user_name":"admin","user_type":"1","email":"ljzxzxl@gmail.com","password":"123456","group_id":"1"}
+{"user_name":"test1","user_type":"1","email":"test1@gmail.com","password":"123456","group_id":"1"}
+{"user_name":"test2","user_type":"1","email":"test2@gmail.com","password":"123456","group_id":"1"}
