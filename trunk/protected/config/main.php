@@ -74,6 +74,48 @@ return array(
 						array('user/view', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('user/update', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('user/delete', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('company/list', 'pattern'=>'company/<model:\w+>', 'verb'=>'GET'),
+						array('company/post', 'pattern'=>'company/<model:\w+>', 'verb'=>'POST'),
+						array('company/view', 'pattern'=>'company/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('company/update', 'pattern'=>'company/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('company/delete', 'pattern'=>'company/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('file/list', 'pattern'=>'file/<model:\w+>', 'verb'=>'GET'),
+						array('file/post', 'pattern'=>'file/<model:\w+>', 'verb'=>'POST'),
+						array('file/view', 'pattern'=>'file/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('file/update', 'pattern'=>'file/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('file/delete', 'pattern'=>'file/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('folder/list', 'pattern'=>'folder/<model:\w+>', 'verb'=>'GET'),
+						array('folder/post', 'pattern'=>'folder/<model:\w+>', 'verb'=>'POST'),
+						array('folder/view', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('folder/update', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('folder/delete', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('group/list', 'pattern'=>'group/<model:\w+>', 'verb'=>'GET'),
+						array('group/post', 'pattern'=>'group/<model:\w+>', 'verb'=>'POST'),
+						array('group/view', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('group/update', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('group/delete', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('order/list', 'pattern'=>'order/<model:\w+>', 'verb'=>'GET'),
+						array('order/post', 'pattern'=>'order/<model:\w+>', 'verb'=>'POST'),
+						array('order/view', 'pattern'=>'order/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('order/update', 'pattern'=>'order/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('order/delete', 'pattern'=>'order/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('share/list', 'pattern'=>'share/<model:\w+>', 'verb'=>'GET'),
+						array('share/post', 'pattern'=>'share/<model:\w+>', 'verb'=>'POST'),
+						array('share/view', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('share/update', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('share/delete', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
+						array('workspace/list', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'GET'),
+						array('workspace/post', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'POST'),
+						array('workspace/view', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('workspace/update', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('workspace/delete', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
 						// Other controllers
 						'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 						//去除index.php后的新规则

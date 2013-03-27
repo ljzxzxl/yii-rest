@@ -14,3 +14,5 @@ http://localhost/yii-rest/index.php/user/delete/1	DELETE
 {"user_name":"admin","user_type":"1","email":"ljzxzxl@gmail.com","password":"123456","group_id":"1"}
 {"user_name":"test1","user_type":"1","email":"test1@gmail.com","password":"123456","group_id":"1"}
 {"user_name":"test2","user_type":"1","email":"test2@gmail.com","password":"123456","group_id":"1"}
+
+{"order_status":"checked","order_date":"1364379828","email":"ljzxzxl@gmail.com","password":"123456","group_id":"1"}
