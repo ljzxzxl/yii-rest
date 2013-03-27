@@ -26,6 +26,7 @@ class UserController extends Controller
     public function actionIndex()
     {
         echo CJSON::encode(array(1, 2, 3));
+		echo guid();
     } // }}} 
 	// {{{ actionList
     public function actionList()
@@ -81,12 +82,12 @@ class UserController extends Controller
     } // }}} 
     // {{{ actionCreate
     /**
-     * Creates a new item
+     * Post a new item
      * 
      * @access public
      * @return void
      */
-    public function actionCreate()
+    public function actionPost()
     {
         //$this->_checkAuth();
 
@@ -94,45 +95,21 @@ class UserController extends Controller
         {
             // Get an instance of the respective model
             case 'create': // {{{ 
-                $model = new User;                    
+                $model = new User;  
+				$this->_addUser($model);
                 break; // }}} 
+			case 'regist': // {{{
+                $model = new User;
+				$this->_addUser($model);
+                break; // }}}
+			case 'login': // {{{
+                $model = new User;
+				$this->_checkLogin($model);
+                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
-        // Try to assign POST values to attributes
-        if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
-		foreach($_POST as $var=>$value) {
-            // Does the model have this attribute?
-            if($model->hasAttribute($var)) {
-                $model->$var = $value;
-            } else {
-                // No, raise an error
-                $this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
-            }
-        }
-        // Try to save the model
-        if($model->save()) {
-            // Saving was OK
-            $this->_sendResponse(200, $model->attributes);
-        } else {
-            // Errors occurred
-            $msg = "<h1>Error</h1>";
-            $msg .= sprintf("Couldn't create model [%s]", $_GET['model']);
-            $msg .= "<ul>";
-            foreach($model->errors as $attribute=>$attr_errors) {
-                $msg .= "<li>Attribute: $attribute</li>";
-                $msg .= "<ul>";
-                foreach($attr_errors as $attr_error) {
-                    $msg .= "<li>$attr_error</li>";
-                }        
-                $msg .= "</ul>";
-            }
-            $msg .= "</ul>";
-            $this->_sendResponse(500, $msg );
-        }
-
-        var_dump($_REQUEST);
     } // }}}     
     // {{{ actionUpdate
     /**
@@ -225,6 +202,99 @@ class UserController extends Controller
         else
             $this->_sendResponse(500, sprintf("Error: Couldn't delete model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
     } // }}} 
+	// {{{ _addUser
+    /**
+     * Post a new item
+     * @return void
+     */
+    public function _addUser($model = '')
+    {
+        if(!empty($model)){
+			// Try to assign POST values to attributes
+			if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
+			if(is_array($_POST)){
+				$user_name = trim($_POST['user_name']);
+				// Find the user by user_name
+				$user_info=User::model()->find('user_name=:user_name', array(':user_name'=>$user_name));
+				if(empty($user_info)){
+					$password = trim($_POST['password']);
+					$_POST['password_salt'] = $password_salt = guid(6);
+					$_POST['password'] = md5(md5($password).$password_salt);
+				}else{
+					$this->_sendResponse(501, sprintf('Error: Parameter user_name already exists') );
+					return;
+				}
+			}else{
+				$this->_sendResponse(501, sprintf('Error: Parameter is required') );
+				return;
+			}
+			foreach($_POST as $var=>$value) {
+				// Does the model have this attribute?
+				if($model->hasAttribute($var)) {
+					$model->$var = $value;
+				} else {
+					// No, raise an error
+					$this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
+				}
+			}
+			// Try to save the model
+			if($model->save()) {
+				// Saving was OK
+				$this->_sendResponse(200, $model->attributes);
+			} else {
+				// Errors occurred
+				$msg = "<h1>Error</h1>";
+				$msg .= sprintf("Couldn't create model [%s]", $_GET['model']);
+				$msg .= "<ul>";
+				foreach($model->errors as $attribute=>$attr_errors) {
+					$msg .= "<li>Attribute: $attribute</li>";
+					$msg .= "<ul>";
+					foreach($attr_errors as $attr_error) {
+						$msg .= "<li>$attr_error</li>";
+					}        
+					$msg .= "</ul>";
+				}
+				$msg .= "</ul>";
+				$this->_sendResponse(500, $msg );
+				return;
+			}
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+			return;
+		}
+    } // }}}
+	// {{{ _checkLogin
+    /**
+     * Check login
+     * @return void
+     */
+    public function _checkLogin($model = '')
+    {
+        if(!empty($model)){
+			// Try to assign POST values to attributes
+			if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
+			$user_name = trim($_POST['user_name']);
+			$password = trim($_POST['password']);
+			// Find the user by user_name
+			$user_info=User::model()->find('user_name=:user_name', array(':user_name'=>$user_name));
+			if(!empty($user_info)){
+				$password_salt = $user_info['password_salt'];
+				$password = md5(md5($password).$password_salt);
+				// Find the user
+				$model = User::model()->find('user_name=:user_name and password=:password', array(':user_name'=>$user_name,':password'=>$password));
+				if(is_null($model)){
+					$this->_sendResponse(401, 'Error: Parameter user_name or password is invalid');
+				}else{
+					$this->_sendResponse(200, $model->attributes);
+				}
+			}else{
+				$this->_sendResponse(401, 'Error: Parameter user_name does not exist');
+			}
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+			return;
+		}
+    } // }}}
     // }}} End Actions
 }
 
