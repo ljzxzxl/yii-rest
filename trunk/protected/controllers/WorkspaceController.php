@@ -98,10 +98,6 @@ class WorkspaceController extends Controller
                 $model = new Workspace;  
 				$this->_addWorkspace($model);
                 break; // }}} 
-			case 'login': // {{{
-                $model = new Workspace;
-				$this->_checkLogin($model);
-                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 

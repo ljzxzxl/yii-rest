@@ -6,7 +6,7 @@
  * The followings are the available columns in table '{{folder}}':
  * @property string $folder_id
  * @property string $folder_name
- * @property integer $partent_id
+ * @property integer $parent_id
  * @property string $path
  */
 class Folder extends CActiveRecord
@@ -37,12 +37,12 @@ class Folder extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('folder_name, partent_id, path', 'required'),
-			array('partent_id', 'numerical', 'integerOnly'=>true),
+			array('folder_name, parent_id, path', 'required'),
+			array('parent_id', 'numerical', 'integerOnly'=>true),
 			array('folder_name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('folder_id, folder_name, partent_id, path', 'safe', 'on'=>'search'),
+			array('folder_id, folder_name, parent_id, path', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,7 +65,7 @@ class Folder extends CActiveRecord
 		return array(
 			'folder_id' => 'Folder',
 			'folder_name' => 'Folder Name',
-			'partent_id' => 'Partent',
+			'parent_id' => 'Parent',
 			'path' => 'Path',
 		);
 	}
@@ -83,7 +83,7 @@ class Folder extends CActiveRecord
 
 		$criteria->compare('folder_id',$this->folder_id,true);
 		$criteria->compare('folder_name',$this->folder_name,true);
-		$criteria->compare('partent_id',$this->partent_id);
+		$criteria->compare('parent_id',$this->parent_id);
 		$criteria->compare('path',$this->path,true);
 
 		return new CActiveDataProvider($this, array(

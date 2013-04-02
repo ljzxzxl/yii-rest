@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table '{{share}}':
  * @property string $share_id
+ * @property string $share_name
  * @property integer $file_id
  * @property integer $folder_id
  * @property integer $share_type
@@ -45,12 +46,12 @@ class Share extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('share_type, owner_uid, permission, share_date', 'required'),
+			array('share_name, share_type, owner_uid, permission, share_date', 'required'),
 			array('file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, download_date, download_nums', 'numerical', 'integerOnly'=>true),
-			array('token, share_link', 'length', 'max'=>255),
+			array('share_name, token, share_link', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('share_id, file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link', 'safe', 'on'=>'search'),
+			array('share_id, share_name, file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +73,7 @@ class Share extends CActiveRecord
 	{
 		return array(
 			'share_id' => 'Share',
+			'share_name' => 'Share Name',
 			'file_id' => 'File',
 			'folder_id' => 'Folder',
 			'share_type' => 'Share Type',
@@ -98,6 +100,7 @@ class Share extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('share_id',$this->share_id,true);
+		$criteria->compare('share_name',$this->share_name,true);
 		$criteria->compare('file_id',$this->file_id);
 		$criteria->compare('folder_id',$this->folder_id);
 		$criteria->compare('share_type',$this->share_type);

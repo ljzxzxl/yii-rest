@@ -98,10 +98,6 @@ class CompanyController extends Controller
                 $model = new Company;  
 				$this->_addCompany($model);
                 break; // }}} 
-			case 'login': // {{{
-                $model = new Company;
-				$this->_checkLogin($model);
-                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
