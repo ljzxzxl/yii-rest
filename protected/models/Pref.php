@@ -1,20 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "{{order}}".
+ * This is the model class for table "{{pref}}".
  *
- * The followings are the available columns in table '{{order}}':
- * @property string $order_id
- * @property string $order_name
- * @property string $order_status
- * @property integer $create_date
+ * The followings are the available columns in table '{{pref}}':
+ * @property string $pref_id
+ * @property string $pref_key
+ * @property string $pref_name
+ * @property string $pref_value
+ * @property integer $user_id
  */
-class Order extends CActiveRecord
+class Pref extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Order the static model class
+	 * @return Pref the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -26,7 +27,7 @@ class Order extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{order}}';
+		return '{{pref}}';
 	}
 
 	/**
@@ -37,12 +38,12 @@ class Order extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_name, order_status, create_date', 'required'),
-			array('create_date', 'numerical', 'integerOnly'=>true),
-			array('order_name, order_status', 'length', 'max'=>255),
+			array('pref_key, pref_name, pref_value, user_id', 'required'),
+			array('user_id', 'numerical', 'integerOnly'=>true),
+			array('pref_key, pref_name, pref_value', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('order_id, order_name, order_status, create_date', 'safe', 'on'=>'search'),
+			array('pref_id, pref_key, pref_name, pref_value, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,10 +64,11 @@ class Order extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'order_id' => 'Order',
-			'order_name' => 'Order Name',
-			'order_status' => 'Order Status',
-			'create_date' => 'Create Date',
+			'pref_id' => 'Pref',
+			'pref_key' => 'Pref Key',
+			'pref_name' => 'Pref Name',
+			'pref_value' => 'Pref Value',
+			'user_id' => 'User',
 		);
 	}
 
@@ -81,10 +83,11 @@ class Order extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('order_id',$this->order_id,true);
-		$criteria->compare('order_name',$this->order_name,true);
-		$criteria->compare('order_status',$this->order_status,true);
-		$criteria->compare('create_date',$this->create_date);
+		$criteria->compare('pref_id',$this->pref_id,true);
+		$criteria->compare('pref_key',$this->pref_key,true);
+		$criteria->compare('pref_name',$this->pref_name,true);
+		$criteria->compare('pref_value',$this->pref_value,true);
+		$criteria->compare('user_id',$this->user_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

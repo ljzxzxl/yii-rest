@@ -98,10 +98,6 @@ class FolderController extends Controller
                 $model = new Folder;  
 				$this->_addFolder($model);
                 break; // }}} 
-			case 'login': // {{{
-                $model = new Folder;
-				$this->_checkLogin($model);
-                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 

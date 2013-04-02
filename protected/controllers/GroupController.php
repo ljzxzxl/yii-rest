@@ -98,10 +98,6 @@ class GroupController extends Controller
                 $model = new Group;  
 				$this->_addGroup($model);
                 break; // }}} 
-			case 'login': // {{{
-                $model = new Group;
-				$this->_checkLogin($model);
-                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 

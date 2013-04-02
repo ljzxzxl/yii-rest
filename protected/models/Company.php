@@ -42,9 +42,10 @@ class Company extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('company_name, company_type, company_status, create_date, last_update_date, last_update_uid', 'required'),
+			array('company_name, company_type, create_date, last_update_date, last_update_uid', 'required'),
 			array('company_type, company_status, create_date, last_update_date, last_update_uid', 'numerical', 'integerOnly'=>true),
-			array('company_address, company_phone', 'safe'),
+			array('company_name, company_address', 'length', 'max'=>255),
+			array('company_phone', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('company_id, company_name, company_type, company_address, company_phone, company_status, create_date, last_update_date, last_update_uid', 'safe', 'on'=>'search'),

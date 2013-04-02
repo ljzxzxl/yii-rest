@@ -105,6 +105,12 @@ return array(
 						array('order/update', 'pattern'=>'order/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('order/delete', 'pattern'=>'order/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
 						
+						array('pref/list', 'pattern'=>'pref/<model:\w+>', 'verb'=>'GET'),
+						array('pref/post', 'pattern'=>'pref/<model:\w+>', 'verb'=>'POST'),
+						array('pref/view', 'pattern'=>'pref/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('pref/update', 'pattern'=>'pref/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
+						array('pref/delete', 'pattern'=>'pref/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						
 						array('share/list', 'pattern'=>'share/<model:\w+>', 'verb'=>'GET'),
 						array('share/post', 'pattern'=>'share/<model:\w+>', 'verb'=>'POST'),
 						array('share/view', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'GET'),

@@ -1,10 +1,10 @@
 <?php
 /**
- * ShareController class file
+ * PrefController class file
  * @author Xeylon Zhou <ljzxzxl@gmail.com> 
  * @date 2013-03-27 
  */
-class ShareController extends Controller
+class PrefController extends Controller
 {
     // {{{ *** Members ***
     /**
@@ -35,7 +35,7 @@ class ShareController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Share::model()->findAll();
+                $models = Pref::model()->findAll();
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -68,7 +68,7 @@ class ShareController extends Controller
         {
             // Find respective model    
             case 'view': // {{{ 
-                $model = Share::model()->findByPk($_GET['id']);
+                $model = Pref::model()->findByPk($_GET['id']);
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -95,8 +95,8 @@ class ShareController extends Controller
         {
             // Get an instance of the respective model
             case 'create': // {{{ 
-                $model = new Share;  
-				$this->_addShare($model);
+                $model = new Pref;  
+				$this->_addPref($model);
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -122,7 +122,7 @@ class ShareController extends Controller
         {
             // Find respective model
             case 'update': // {{{ 
-                $model = Share::model()->findByPk($_GET['id']);                    
+                $model = Pref::model()->findByPk($_GET['id']);                    
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -175,7 +175,7 @@ class ShareController extends Controller
         {
             // Load the respective model
             case 'delete': // {{{ 
-                $model = Share::model()->findByPk($_GET['id']);                    
+                $model = Pref::model()->findByPk($_GET['id']);                    
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -194,22 +194,22 @@ class ShareController extends Controller
         else
             $this->_sendResponse(500, sprintf("Error: Couldn't delete model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
     } // }}} 
-	// {{{ _addShare
+	// {{{ _addPref
     /**
      * Post a new item
      * @return void
      */
-    public function _addShare($model = '')
+    public function _addPref($model = '')
     {
         if(!empty($model)){
 			// Try to assign POST values to attributes
 			if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
 			if(is_array($_POST)){
-				$share_name = trim($_POST['share_name']);
-				// Find the share by share_name
-				$share_info=Share::model()->find('share_name=:share_name', array(':share_name'=>$share_name));
-				if(!empty($share_info)){
-					$this->_sendResponse(501, sprintf('Error: Parameter share_name already exists') );
+				$pref_name = trim($_POST['pref_name']);
+				// Find the pref by pref_name
+				$pref_info=Pref::model()->find('pref_name=:pref_name', array(':pref_name'=>$pref_name));
+				if(!empty($pref_info)){
+					$this->_sendResponse(501, sprintf('Error: Parameter pref_name already exists') );
 					return;
 				}
 			}else{

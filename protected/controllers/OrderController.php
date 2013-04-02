@@ -98,10 +98,6 @@ class OrderController extends Controller
                 $model = new Order;  
 				$this->_addOrder($model);
                 break; // }}} 
-			case 'login': // {{{
-                $model = new Order;
-				$this->_checkLogin($model);
-                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
