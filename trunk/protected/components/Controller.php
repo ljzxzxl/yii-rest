@@ -20,6 +20,28 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+
+	/**
+	 * Controller language init
+	 */
+	public function init()
+	{
+		if(isset($_GET['lang']) && $_GET['lang'] != "")
+		{
+			Yii::app()->language = $_GET['lang'];
+			Yii::app()->request->cookies['lang'] = new CHttpCookie('lang', $_GET['lang']);
+		}
+		else if(!empty(Yii::app()->request->cookies['lang']))
+		{
+			Yii::app()->language = Yii::app()->request->cookies['lang'];
+		}
+		else
+		{
+			$lang = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+			Yii::app()->language = strtolower(str_replace('-', '_', $lang[0]));
+		}
+	}
+
 	// {{{ Common Methods
     // {{{ _sendResponse
     /**
