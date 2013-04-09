@@ -33,7 +33,8 @@ class Controller extends CController
 		}
 		else if(!empty(Yii::app()->request->cookies['lang']))
 		{
-			Yii::app()->language = Yii::app()->request->cookies['lang'];
+			//Yii::app()->language = Yii::app()->request->cookies['lang'];
+			Yii::app()->language = $_COOKIE['lang'];
 		}
 		else
 		{
