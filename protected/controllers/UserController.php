@@ -27,6 +27,7 @@ class UserController extends Controller
     {
         echo CJSON::encode(array(1, 2, 3));
 		echo guid();
+		echo Yii::t('api', 'language test');
     } // }}} 
 	// {{{ actionList
     public function actionList()

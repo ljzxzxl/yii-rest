@@ -32,6 +32,9 @@ return array(
 
 	'defaultController'=>'user',
 
+	'language'=>'zh_cn',
+	'sourceLanguage'=>'en_us',
+
 	// application components
 	'components'=>array(
 		'user'=>array(
@@ -62,7 +65,7 @@ return array(
         ),
         'urlManager'=>array(
         	'urlFormat'=>'path',
-			'showScriptName'=>false,    //是否显示URL中的index.php
+			'showScriptName'=>true,    //是否显示URL中的index.php
         	'rules'=>array(
 						//Gii启用所需规则
 						'gii'=>'gii',
