@@ -58,7 +58,16 @@ return array(
 			'charset' => 'utf8',
 			'tablePrefix' => 'yxz_',
 		),
-		
+
+		//Yii RBAC 用户角色权限控制配置
+		'authManager'=>array(
+			'class' => 'CDbAuthManager',//认证类名称
+			'defaultRoles' => array('guest'),//默认角色
+			'itemTable' => 'yxz_auth_item',//认证项表名称
+			'itemChildTable' => 'yxz_auth_item_child',//认证项父子关系
+			'assignmentTable' => 'yxz_auth_assignment',//认证项赋权关系
+		),
+
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
             'errorAction'=>'site/error',
