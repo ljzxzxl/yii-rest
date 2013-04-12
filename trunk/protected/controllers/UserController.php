@@ -59,16 +59,40 @@ class UserController extends Controller
         switch($_GET['model'])
         {
             case 'file': // {{{ 
-                $models = File::model()->findAll();
+				if(intval($_GET['user_id'])){
+					$models = File::model()->findAll('owner_uid=:user_id', array(':user_id'=>$_GET['user_id']));
+				}else{
+					$this->_sendResponse(401, 'Error: Parameter user_id is required');
+				}
                 break; // }}}
-            case 'folder': // {{{ 
-                $models = Folder::model()->findAll();
+            case 'share_file': // {{{ 
+				if(intval($_GET['user_id'])){
+					$file_ids = '';
+					$models = ShareToUser::model()->findAll('user_id=:user_id', array(':user_id'=>$_GET['user_id']));
+					foreach($models as $model){
+						$rows[] = $model->attributes;}
+					foreach($rows as $k => $v){
+						$share_id = $v['share_id'];
+						$model = Share::model()->findByPk($share_id);
+						$row = $model->attributes;
+						if(!empty($row['file_id'])){
+							$file_ids .= $row['file_id'].',';
+						}
+					}
+					$file_ids = rtrim($file_ids,',');
+					$models = File::model()->findAll("file_id IN({$file_ids}) AND is_deleted = :is_deleted", array(':is_deleted'=>'false'));
+				}else{
+					$this->_sendResponse(401, 'Error: Parameter user_id is required');
+				}
+                break; // }}}
+			case 'folder': // {{{ 
+				$models = Folder::model()->findAll('owner_uid=:user_id', array(':user_id'=>$_GET['user_id']));
                 break; // }}}
 			default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
-        if(is_null($models)) {
+        if(empty($models)) {
             $this->_sendResponse(200, sprintf('No items where found for model [%s]', $_GET['model']) );
         } else {
             $rows = array();

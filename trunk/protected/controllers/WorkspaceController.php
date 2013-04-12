@@ -35,7 +35,11 @@ class WorkspaceController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Workspace::model()->findAll();
+				if(empty($_GET['company_id'])){
+					$models = Workspace::model()->findAll();
+				}else{
+					$models = Workspace::model()->findAll('company_id=:company_id', array(':company_id'=>$_GET['company_id']));
+				}
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
