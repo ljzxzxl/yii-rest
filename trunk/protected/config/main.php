@@ -83,9 +83,10 @@ return array(
 						// REST patterns
 						array('user/list', 'pattern'=>'user/<model:\w+>', 'verb'=>'GET'),
 						array('user/post', 'pattern'=>'user/<model:\w+>', 'verb'=>'POST'),
-						array('user/view', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('user/get', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('user/update', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('user/delete', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('user/resource/list', 'pattern'=>'user/<model:\w+>/<act:\w+>', 'verb'=>'GET'),
 						
 						array('company/list', 'pattern'=>'company/<model:\w+>', 'verb'=>'GET'),
 						array('company/post', 'pattern'=>'company/<model:\w+>', 'verb'=>'POST'),
@@ -101,15 +102,17 @@ return array(
 						
 						array('folder/list', 'pattern'=>'folder/<model:\w+>', 'verb'=>'GET'),
 						array('folder/post', 'pattern'=>'folder/<model:\w+>', 'verb'=>'POST'),
-						array('folder/view', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('folder/get', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('folder/update', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('folder/delete', 'pattern'=>'folder/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('folder/resource/list', 'pattern'=>'folder/<model:\w+>/<act:\w+>', 'verb'=>'GET'),
 						
 						array('group/list', 'pattern'=>'group/<model:\w+>', 'verb'=>'GET'),
 						array('group/post', 'pattern'=>'group/<model:\w+>', 'verb'=>'POST'),
-						array('group/view', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('group/get', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('group/update', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('group/delete', 'pattern'=>'group/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('group/resource/list', 'pattern'=>'group/<model:\w+>/<act:\w+>', 'verb'=>'GET'),
 						
 						array('order/list', 'pattern'=>'order/<model:\w+>', 'verb'=>'GET'),
 						array('order/post', 'pattern'=>'order/<model:\w+>', 'verb'=>'POST'),
@@ -131,9 +134,10 @@ return array(
 						
 						array('workspace/list', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'GET'),
 						array('workspace/post', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'POST'),
-						array('workspace/view', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('workspace/get', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
 						array('workspace/update', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('workspace/delete', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('workspace/resource/list', 'pattern'=>'workspace/<model:\w+>/<act:\w+>', 'verb'=>'GET'),
 						// Other controllers
 						'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 						//去除index.php后的新规则
