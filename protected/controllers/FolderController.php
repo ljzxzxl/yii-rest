@@ -58,7 +58,11 @@ class FolderController extends Controller
         switch($_GET['model'])
         {
             case 'file': // {{{ 
-                $models = File::model()->findAll();
+				if(intval($_GET['folder_id'])){
+					$models = File::model()->findAll('folder_id=:folder_id', array(':folder_id'=>$_GET['folder_id']));
+				}else{
+					$this->_sendResponse(401, 'Error: Parameter folder_id is required');
+				}
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

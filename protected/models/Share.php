@@ -6,8 +6,8 @@
  * The followings are the available columns in table '{{share}}':
  * @property string $share_id
  * @property string $share_name
- * @property integer $file_id
- * @property integer $folder_id
+ * @property string $file_id
+ * @property string $folder_id
  * @property integer $share_type
  * @property integer $owner_uid
  * @property integer $permission
@@ -17,6 +17,7 @@
  * @property integer $download_date
  * @property integer $download_nums
  * @property string $share_link
+ * @property string $is_deleted
  */
 class Share extends CActiveRecord
 {
@@ -47,11 +48,12 @@ class Share extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('share_name, share_type, owner_uid, permission, share_date', 'required'),
-			array('file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, download_date, download_nums', 'numerical', 'integerOnly'=>true),
-			array('share_name, token, share_link', 'length', 'max'=>255),
+			array('share_type, owner_uid, permission, share_date, expiration, download_date, download_nums', 'numerical', 'integerOnly'=>true),
+			array('share_name, file_id, folder_id, token, share_link', 'length', 'max'=>255),
+			array('is_deleted', 'length', 'max'=>5),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('share_id, share_name, file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link', 'safe', 'on'=>'search'),
+			array('share_id, share_name, file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link, is_deleted', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,6 +87,7 @@ class Share extends CActiveRecord
 			'download_date' => 'Download Date',
 			'download_nums' => 'Download Nums',
 			'share_link' => 'Share Link',
+			'is_deleted' => 'Is Deleted',
 		);
 	}
 
@@ -101,8 +104,8 @@ class Share extends CActiveRecord
 
 		$criteria->compare('share_id',$this->share_id,true);
 		$criteria->compare('share_name',$this->share_name,true);
-		$criteria->compare('file_id',$this->file_id);
-		$criteria->compare('folder_id',$this->folder_id);
+		$criteria->compare('file_id',$this->file_id,true);
+		$criteria->compare('folder_id',$this->folder_id,true);
 		$criteria->compare('share_type',$this->share_type);
 		$criteria->compare('owner_uid',$this->owner_uid);
 		$criteria->compare('permission',$this->permission);
@@ -112,6 +115,7 @@ class Share extends CActiveRecord
 		$criteria->compare('download_date',$this->download_date);
 		$criteria->compare('download_nums',$this->download_nums);
 		$criteria->compare('share_link',$this->share_link,true);
+		$criteria->compare('is_deleted',$this->is_deleted,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

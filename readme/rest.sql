@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 10 日 14:53
+-- 生成日期: 2013 年 04 月 12 日 17:45
 -- 服务器版本: 5.1.58-log
 -- PHP 版本: 5.3.10
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
 
 INSERT INTO `yxz_file` (`file_id`, `file_name`, `path`, `folder_id`, `owner_uid`, `file_size`, `file_path`, `create_date`, `update_date`, `update_uid`, `mime_type`, `hash`, `create_uid`, `create_uname`, `company_id`, `version_id`, `is_deleted`, `sort`) VALUES
 (1, '测试文件名', 'D:\\www\\htdocs\\yii-rest\\readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL),
-(2, '测试文件名二', 'D:\\www\\htdocs\\yii-rest\\readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL);
+(2, '测试文件名二', 'D:\\www\\htdocs\\yii-rest\\readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL);
 
 -- --------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `yxz_folder` (
   `folder_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `folder_name` varchar(255) NOT NULL COMMENT '文件夹名称',
   `parent_id` int(11) NOT NULL COMMENT '父文件夹id',
-  `path` text NOT NULL COMMENT '路径',
+  `path` varchar(300) NOT NULL COMMENT '路径',
   `owner_uid` int(11) NOT NULL COMMENT '所有者id',
   `create_uid` int(11) NOT NULL COMMENT '创建者用户id',
   `create_uname` varchar(255) NOT NULL COMMENT '创建者用户名',
@@ -150,15 +150,20 @@ CREATE TABLE IF NOT EXISTS `yxz_folder` (
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`folder_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `yxz_folder`
 --
 
 INSERT INTO `yxz_folder` (`folder_id`, `folder_name`, `parent_id`, `path`, `owner_uid`, `create_uid`, `create_uname`, `create_date`, `update_date`, `update_uid`, `company_id`, `version_id`, `is_deleted`, `sort`) VALUES
-(1, '测试文件夹', 1, 'D:\\\\www\\\\htdocs\\\\yii-rest\\\\readme', 0, 0, '', 0, NULL, NULL, 0, NULL, 'false', NULL),
-(2, '测试文件夹二', 1, 'D:\\\\www\\\\htdocs\\\\yii-rest\\\\readme', 0, 0, '', 0, NULL, NULL, 0, NULL, 'false', NULL);
+(1, '市场调研', 0, '/1/市场调研', 1, 1, 'admin', 1365736270, NULL, NULL, 1, 1, 'false', 1),
+(2, '需求文档', 0, '/1/需求文档', 1, 1, 'admin', 1365736275, NULL, NULL, 1, 1, 'false', 2),
+(4, '竞争对手分析', 1, '/1/竞争对手分析', 1, 1, 'admin', 1365736453, NULL, NULL, 1, 1, 'false', 4),
+(3, '产品愿景', 1, '/1/产品愿景', 1, 1, 'admin', 1365736270, NULL, NULL, 1, 1, 'false', 3),
+(5, '参考资料', 1, '/1/参考资料', 1, 1, 'admin', 1365736511, NULL, NULL, 1, 1, 'false', 5),
+(6, '原型图', 2, '/1/原型图', 1, 1, 'admin', 1365736574, NULL, NULL, 1, 1, 'false', 6),
+(7, '需求说明书', 2, '/1/需求说明书', 1, 1, 'admin', 1365736626, NULL, NULL, 1, 1, 'false', 7);
 
 -- --------------------------------------------------------
 
@@ -253,8 +258,8 @@ INSERT INTO `yxz_pref` (`pref_id`, `pref_key`, `pref_name`, `pref_value`, `user_
 CREATE TABLE IF NOT EXISTS `yxz_share` (
   `share_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `share_name` varchar(255) NOT NULL COMMENT '分享名称',
-  `file_id` int(11) DEFAULT NULL COMMENT '文件id',
-  `folder_id` int(11) DEFAULT NULL COMMENT '文件夹id',
+  `file_id` varchar(255) DEFAULT NULL COMMENT '文件id',
+  `folder_id` varchar(255) DEFAULT NULL COMMENT '文件夹id',
   `share_type` int(11) NOT NULL COMMENT '分享类型',
   `owner_uid` int(11) NOT NULL COMMENT '所有者用户id',
   `permission` int(11) NOT NULL COMMENT '权限',
@@ -264,6 +269,7 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
   `download_date` int(11) DEFAULT NULL COMMENT '下载日期',
   `download_nums` int(11) DEFAULT NULL COMMENT '下载次数',
   `share_link` varchar(255) DEFAULT NULL COMMENT '分享链接',
+  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -271,9 +277,9 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
 -- 转存表中的数据 `yxz_share`
 --
 
-INSERT INTO `yxz_share` (`share_id`, `share_name`, `file_id`, `folder_id`, `share_type`, `owner_uid`, `permission`, `share_date`, `expiration`, `token`, `download_date`, `download_nums`, `share_link`) VALUES
-(1, '测试分享', 1, 1, 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP'),
-(2, '测试分享二', 1, 1, 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP');
+INSERT INTO `yxz_share` (`share_id`, `share_name`, `file_id`, `folder_id`, `share_type`, `owner_uid`, `permission`, `share_date`, `expiration`, `token`, `download_date`, `download_nums`, `share_link`, `is_deleted`) VALUES
+(1, '测试分享', '1,2,3', '0', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false'),
+(2, '测试分享二', '2', '1', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false');
 
 -- --------------------------------------------------------
 
@@ -282,10 +288,19 @@ INSERT INTO `yxz_share` (`share_id`, `share_name`, `file_id`, `folder_id`, `shar
 --
 
 CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
-  `share_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
+  `share_id` int(11) unsigned NOT NULL,
+  `group_id` int(11) NOT NULL COMMENT '组id',
+  `create_date` int(11) NOT NULL COMMENT '创建日期',
+  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `yxz_share_to_group`
+--
+
+INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`, `is_deleted`) VALUES
+(1, 1, 1365755861, 'false');
 
 -- --------------------------------------------------------
 
@@ -294,10 +309,20 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
 --
 
 CREATE TABLE IF NOT EXISTS `yxz_share_to_user` (
-  `share_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `share_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `create_date` int(11) NOT NULL COMMENT '创建日期',
+  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `yxz_share_to_user`
+--
+
+INSERT INTO `yxz_share_to_user` (`share_id`, `user_id`, `create_date`, `is_deleted`) VALUES
+(1, 1, 1365755861, 'false'),
+(2, 1, 1365756109, 'false');
 
 -- --------------------------------------------------------
 
@@ -340,6 +365,39 @@ INSERT INTO `yxz_user` (`user_id`, `user_name`, `real_name`, `user_type`, `email
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `yxz_user_favorite`
+--
+
+CREATE TABLE IF NOT EXISTS `yxz_user_favorite` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名',
+  `file_id` int(11) NOT NULL COMMENT '文件id',
+  `memo` varchar(255) NOT NULL COMMENT '用户备注',
+  `create_date` int(11) NOT NULL COMMENT '创建日期',
+  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `yxz_user_recycle`
+--
+
+CREATE TABLE IF NOT EXISTS `yxz_user_recycle` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名',
+  `obj_id` int(11) NOT NULL COMMENT '对象id',
+  `obj_type` enum('file','folder','other') NOT NULL DEFAULT 'other' COMMENT '对象类型',
+  `create_date` int(11) NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `yxz_workspace`
 --
 
@@ -363,8 +421,8 @@ CREATE TABLE IF NOT EXISTS `yxz_workspace` (
 --
 
 INSERT INTO `yxz_workspace` (`workspace_id`, `workspace_name`, `workspace_desc`, `create_uid`, `create_uname`, `create_date`, `update_date`, `update_uid`, `company_id`, `is_deleted`, `sort`) VALUES
-(1, '测试工作空间', '测试描述文字', 0, '', 0, NULL, NULL, 0, 'false', NULL),
-(2, '测试工作空间二', '测试描述文字', 0, '', 0, NULL, NULL, 0, 'false', NULL);
+(1, '测试工作空间', '测试描述文字', 0, '', 0, NULL, NULL, 1, 'false', NULL),
+(2, '测试工作空间二', '测试描述文字', 0, '', 0, NULL, NULL, 1, 'false', NULL);
 
 -- --------------------------------------------------------
 
