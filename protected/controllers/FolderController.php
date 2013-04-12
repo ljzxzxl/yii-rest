@@ -51,13 +51,36 @@ class FolderController extends Controller
             $this->_sendResponse(200, $rows);
         }
     } // }}} 
+	// {{{ actionList
+    public function actionResource()
+    {
+        //$this->_checkAuth();
+        switch($_GET['model'])
+        {
+            case 'file': // {{{ 
+                $models = File::model()->findAll();
+                break; // }}} 
+            default: // {{{ 
+                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+                exit; // }}} 
+        }
+        if(is_null($models)) {
+            $this->_sendResponse(200, sprintf('No items where found for model [%s]', $_GET['model']) );
+        } else {
+            $rows = array();
+            foreach($models as $model)
+                $rows[] = $model->attributes;
+
+            $this->_sendResponse(200, $rows);
+        }
+    } // }}}
     // {{{ actionView
     /* Shows a single item
      * 
      * @access public
      * @return void
      */
-    public function actionView()
+    public function actionGet()
     {
         //$this->_checkAuth();
         // Check if id was submitted via GET
@@ -70,6 +93,9 @@ class FolderController extends Controller
             case 'view': // {{{ 
                 $model = Folder::model()->findByPk($_GET['id']);
                 break; // }}} 
+			case 'file': // {{{ 
+                $model = File::model()->findByPk($_GET['id']);
+                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
