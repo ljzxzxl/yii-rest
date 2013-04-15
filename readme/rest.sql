@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 12 日 17:45
+-- 生成日期: 2013 年 04 月 15 日 15:23
 -- 服务器版本: 5.1.58-log
 -- PHP 版本: 5.3.10
 
@@ -125,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
 --
 
 INSERT INTO `yxz_file` (`file_id`, `file_name`, `path`, `folder_id`, `owner_uid`, `file_size`, `file_path`, `create_date`, `update_date`, `update_uid`, `mime_type`, `hash`, `create_uid`, `create_uname`, `company_id`, `version_id`, `is_deleted`, `sort`) VALUES
-(1, '测试文件名', 'D:\\www\\htdocs\\yii-rest\\readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL),
-(2, '测试文件名二', 'D:\\www\\htdocs\\yii-rest\\readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL);
+(1, '测试文件名', '/www/htdocs/yii-rest/readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL),
+(2, '测试文件名二', '/www/htdocs/yii-rest/readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL);
 
 -- --------------------------------------------------------
 

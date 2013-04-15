@@ -81,6 +81,8 @@ return array(
 						'gii/<controller:\w+>'=>'gii/<controller>',
 						'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
 						// REST patterns
+						array('search', 'pattern'=>'search/<keyword:\w+>', 'verb'=>'GET'),
+						
 						array('user/list', 'pattern'=>'user/<model:\w+>', 'verb'=>'GET'),
 						array('user/post', 'pattern'=>'user/<model:\w+>', 'verb'=>'POST'),
 						array('user/get', 'pattern'=>'user/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
