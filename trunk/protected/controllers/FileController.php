@@ -186,10 +186,17 @@ class FileController extends Controller
             // No, raise an error
             $this->_sendResponse(400, sprintf("Error: Didn't find any model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
         }
-
-        // Delete the model
-        $num = $model->delete();
-        if($num>0)
+		// Add to the Recycle Bin
+		$file = $model->attributes;
+		$recycle = new UserRecycle;
+		$recycle->user_id = $file['owner_uid'];
+		$recycle->obj_id = $file['file_id'];
+		$recycle->obj_type = 'file';
+		$recycle->create_date = time();
+		$recycle->save();
+		// Delete the model
+		$model->is_deleted = 'true';
+		if($model->save())
             $this->_sendResponse(200, sprintf("Model [%s] with ID [%s] has been deleted.",$_GET['model'], $_GET['id']) );
         else
             $this->_sendResponse(500, sprintf("Error: Couldn't delete model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );

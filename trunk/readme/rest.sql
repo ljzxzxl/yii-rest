@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 15 日 15:23
+-- 生成日期: 2013 年 04 月 15 日 19:06
 -- 服务器版本: 5.1.58-log
 -- PHP 版本: 5.3.10
 
@@ -105,15 +105,15 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
   `folder_id` int(11) NOT NULL COMMENT '文件夹id',
   `owner_uid` int(11) NOT NULL COMMENT '所有者id',
   `file_size` int(11) DEFAULT NULL COMMENT '文件尺寸',
-  `file_path` varchar(255) NOT NULL COMMENT '文件路径',
+  `file_path` varchar(255) DEFAULT NULL COMMENT '文件路径',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
   `update_date` int(11) DEFAULT NULL COMMENT '更新日期',
   `update_uid` int(11) DEFAULT NULL COMMENT '更新用户',
-  `mime_type` varchar(64) DEFAULT NULL COMMENT 'MIME类型',
+  `mime_type` varchar(64) NOT NULL COMMENT 'MIME类型',
   `hash` varchar(255) DEFAULT NULL COMMENT '哈希值',
-  `create_uid` int(11) NOT NULL COMMENT '创建者用户id',
-  `create_uname` varchar(255) NOT NULL COMMENT '创建者用户名',
-  `company_id` int(11) NOT NULL COMMENT '所属公司id',
+  `create_uid` int(11) DEFAULT NULL COMMENT '创建者用户id',
+  `create_uname` varchar(255) DEFAULT NULL COMMENT '创建者用户名',
+  `company_id` int(11) DEFAULT NULL COMMENT '所属公司id',
   `version_id` int(11) DEFAULT NULL COMMENT '版本号',
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
@@ -125,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
 --
 
 INSERT INTO `yxz_file` (`file_id`, `file_name`, `path`, `folder_id`, `owner_uid`, `file_size`, `file_path`, `create_date`, `update_date`, `update_uid`, `mime_type`, `hash`, `create_uid`, `create_uname`, `company_id`, `version_id`, `is_deleted`, `sort`) VALUES
-(1, '测试文件名', '/www/htdocs/yii-rest/readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL),
-(2, '测试文件名二', '/www/htdocs/yii-rest/readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'false', NULL);
+(1, '测试文件名', '/www/htdocs/yii-rest/readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'true', NULL),
+(2, '测试文件名二', '/www/htdocs/yii-rest/readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'true', NULL);
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `yxz_folder` (
   `create_date` int(11) NOT NULL COMMENT '创建日期',
   `update_date` int(11) DEFAULT NULL COMMENT '更新日期',
   `update_uid` int(11) DEFAULT NULL COMMENT '更新用户',
-  `company_id` int(11) NOT NULL COMMENT '所属公司id',
+  `company_id` int(11) DEFAULT NULL COMMENT '所属公司id',
   `version_id` int(11) DEFAULT NULL COMMENT '版本号',
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
   `download_date` int(11) DEFAULT NULL COMMENT '下载日期',
   `download_nums` int(11) DEFAULT NULL COMMENT '下载次数',
   `share_link` varchar(255) DEFAULT NULL COMMENT '分享链接',
-  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
+  `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -291,7 +291,6 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
   `share_id` int(11) unsigned NOT NULL,
   `group_id` int(11) NOT NULL COMMENT '组id',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
-  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -299,8 +298,8 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
 -- 转存表中的数据 `yxz_share_to_group`
 --
 
-INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`, `is_deleted`) VALUES
-(1, 1, 1365755861, 'false');
+INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`) VALUES
+(1, 1, 1365755861);
 
 -- --------------------------------------------------------
 
@@ -312,7 +311,6 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_user` (
   `share_id` int(11) unsigned NOT NULL,
   `user_id` int(11) NOT NULL COMMENT '用户id',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
-  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -320,9 +318,9 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_user` (
 -- 转存表中的数据 `yxz_share_to_user`
 --
 
-INSERT INTO `yxz_share_to_user` (`share_id`, `user_id`, `create_date`, `is_deleted`) VALUES
-(1, 1, 1365755861, 'false'),
-(2, 1, 1365756109, 'false');
+INSERT INTO `yxz_share_to_user` (`share_id`, `user_id`, `create_date`) VALUES
+(1, 1, 1365755861),
+(2, 1, 1365756109);
 
 -- --------------------------------------------------------
 
@@ -371,11 +369,9 @@ INSERT INTO `yxz_user` (`user_id`, `user_name`, `real_name`, `user_type`, `email
 CREATE TABLE IF NOT EXISTS `yxz_user_favorite` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT '用户id',
-  `user_name` varchar(255) NOT NULL COMMENT '用户名',
   `file_id` int(11) NOT NULL COMMENT '文件id',
   `memo` varchar(255) NOT NULL COMMENT '用户备注',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
-  `is_deleted` enum('true','false') NOT NULL DEFAULT 'false' COMMENT '是否删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -388,12 +384,20 @@ CREATE TABLE IF NOT EXISTS `yxz_user_favorite` (
 CREATE TABLE IF NOT EXISTS `yxz_user_recycle` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT '用户id',
-  `user_name` varchar(255) NOT NULL COMMENT '用户名',
   `obj_id` int(11) NOT NULL COMMENT '对象id',
   `obj_type` enum('file','folder','other') NOT NULL DEFAULT 'other' COMMENT '对象类型',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `yxz_user_recycle`
+--
+
+INSERT INTO `yxz_user_recycle` (`id`, `user_id`, `obj_id`, `obj_type`, `create_date`) VALUES
+(1, 1, 1, 'file', 1366023199),
+(2, 2, 2, 'file', 1366017465),
+(3, 2, 2, 'file', 1366023088);
 
 -- --------------------------------------------------------
 

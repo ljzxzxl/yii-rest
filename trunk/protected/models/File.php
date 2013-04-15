@@ -51,7 +51,7 @@ class File extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('file_name, path, folder_id, owner_uid, file_path, create_date, create_uid, create_uname, company_id', 'required'),
+			array('file_name, path, folder_id, owner_uid, create_date, mime_type', 'required'),
 			array('folder_id, owner_uid, file_size, create_date, update_date, update_uid, create_uid, company_id, version_id, sort', 'numerical', 'integerOnly'=>true),
 			array('file_name, file_path, hash, create_uname', 'length', 'max'=>255),
 			array('mime_type', 'length', 'max'=>64),
