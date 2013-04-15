@@ -7,7 +7,6 @@
  * @property string $share_id
  * @property integer $user_id
  * @property integer $create_date
- * @property string $is_deleted
  */
 class ShareToUser extends CActiveRecord
 {
@@ -40,10 +39,9 @@ class ShareToUser extends CActiveRecord
 			array('share_id, user_id, create_date', 'required'),
 			array('user_id, create_date', 'numerical', 'integerOnly'=>true),
 			array('share_id', 'length', 'max'=>11),
-			array('is_deleted', 'length', 'max'=>5),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('share_id, user_id, create_date, is_deleted', 'safe', 'on'=>'search'),
+			array('share_id, user_id, create_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,7 +65,6 @@ class ShareToUser extends CActiveRecord
 			'share_id' => 'Share',
 			'user_id' => 'User',
 			'create_date' => 'Create Date',
-			'is_deleted' => 'Is Deleted',
 		);
 	}
 
@@ -85,7 +82,6 @@ class ShareToUser extends CActiveRecord
 		$criteria->compare('share_id',$this->share_id,true);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('create_date',$this->create_date);
-		$criteria->compare('is_deleted',$this->is_deleted,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

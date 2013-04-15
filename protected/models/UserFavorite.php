@@ -6,11 +6,9 @@
  * The followings are the available columns in table '{{user_favorite}}':
  * @property string $id
  * @property integer $user_id
- * @property string $user_name
  * @property integer $file_id
  * @property string $memo
  * @property integer $create_date
- * @property string $is_deleted
  */
 class UserFavorite extends CActiveRecord
 {
@@ -40,13 +38,12 @@ class UserFavorite extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, user_name, file_id, memo, create_date', 'required'),
+			array('user_id, file_id, memo, create_date', 'required'),
 			array('user_id, file_id, create_date', 'numerical', 'integerOnly'=>true),
-			array('user_name, memo', 'length', 'max'=>255),
-			array('is_deleted', 'length', 'max'=>5),
+			array('memo', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, user_name, file_id, memo, create_date, is_deleted', 'safe', 'on'=>'search'),
+			array('id, user_id, file_id, memo, create_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,11 +66,9 @@ class UserFavorite extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'user_id' => 'User',
-			'user_name' => 'User Name',
 			'file_id' => 'File',
 			'memo' => 'Memo',
 			'create_date' => 'Create Date',
-			'is_deleted' => 'Is Deleted',
 		);
 	}
 
@@ -90,11 +85,9 @@ class UserFavorite extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('user_name',$this->user_name,true);
 		$criteria->compare('file_id',$this->file_id);
 		$criteria->compare('memo',$this->memo,true);
 		$criteria->compare('create_date',$this->create_date);
-		$criteria->compare('is_deleted',$this->is_deleted,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

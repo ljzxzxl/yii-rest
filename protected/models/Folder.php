@@ -47,7 +47,7 @@ class Folder extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('folder_name, parent_id, path, owner_uid, create_uid, create_uname, create_date, company_id', 'required'),
+			array('folder_name, parent_id, path, owner_uid, create_uid, create_uname, create_date', 'required'),
 			array('parent_id, owner_uid, create_uid, create_date, update_date, update_uid, company_id, version_id, sort', 'numerical', 'integerOnly'=>true),
 			array('folder_name, create_uname', 'length', 'max'=>255),
 			array('path', 'length', 'max'=>300),
