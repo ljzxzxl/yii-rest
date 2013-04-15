@@ -141,6 +141,12 @@ return array(
 						array('workspace/update', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
 						array('workspace/delete', 'pattern'=>'workspace/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
 						array('workspace/resource/list', 'pattern'=>'workspace/<model:\w+>/<act:\w+>', 'verb'=>'GET'),
+						
+						array('favorite/list', 'pattern'=>'favorite/<model:\w+>', 'verb'=>'GET'),
+						array('favorite/post', 'pattern'=>'favorite/<model:\w+>', 'verb'=>'POST'),
+						array('favorite/get', 'pattern'=>'favorite/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('favorite/update', 'pattern'=>'favorite/<model:\w+>', 'verb'=>'PUT'),
+						array('favorite/delete', 'pattern'=>'favorite/<model:\w+>', 'verb'=>'DELETE'),
 						// Other controllers
 						'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 						//去除index.php后的新规则
