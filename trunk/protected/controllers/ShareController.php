@@ -2,7 +2,7 @@
 /**
  * ShareController class file
  * @author Xeylon Zhou <ljzxzxl@gmail.com> 
- * @date 2013-03-27 
+ * @date 2013-04-15 
  */
 class ShareController extends Controller
 {
@@ -27,29 +27,37 @@ class ShareController extends Controller
     public function actionIndex()
     {
         echo CJSON::encode(array(1, 2, 3));
+		echo guid();
+		echo Yii::t('api', 'language test');
     } // }}} 
 	// {{{ actionList
     public function actionList()
     {
         //$this->_checkAuth();
-        switch($_GET['model'])
-        {
-            case 'list': // {{{ 
-                $models = Share::model()->findAll();
-                break; // }}} 
-            default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
-                exit; // }}} 
-        }
-        if(is_null($models)) {
-            $this->_sendResponse(200, sprintf('No items where found for model [%s]', $_GET['model']) );
-        } else {
-            $rows = array();
-            foreach($models as $model)
-                $rows[] = $model->attributes;
-
-            $this->_sendResponse(200, $rows);
-        }
+		if(!empty($_GET['model']) && intval($_GET['user_id'])){
+			$user_id = intval($_GET['user_id']);
+			switch($_GET['model'])
+			{
+				case 'list': // {{{ 
+					$models = Share::model()->findAll('owner_uid=:user_id', array(':user_id'=>$user_id));
+					break; // }}} 
+				default: // {{{ 
+					$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+					exit; // }}} 
+			}
+			if(empty($models)) {
+				$this->_sendResponse(200, sprintf('No items where found for model [%s]', $_GET['model']) );
+			} else {
+				$rows = array();
+				foreach($models as $model)
+					$rows[] = $model->attributes;
+	
+				$this->_sendResponse(200, $rows);
+			}
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Parameter user_id and obj_id is required') );
+			exit;
+		}
     } // }}} 
     // {{{ actionView
     /* Shows a single item
@@ -57,7 +65,7 @@ class ShareController extends Controller
      * @access public
      * @return void
      */
-    public function actionView()
+    public function actionGet()
     {
         //$this->_checkAuth();
         // Check if id was submitted via GET
@@ -98,6 +106,12 @@ class ShareController extends Controller
                 $model = new Share;  
 				$this->_addShare($model);
                 break; // }}} 
+			case 'toUser': // {{{ 
+				$this->_addShareToUser();
+                break; // }}}
+			case 'toGroup': // {{{ 
+				$this->_addShareToGroup();
+                break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
@@ -117,48 +131,57 @@ class ShareController extends Controller
         // Get PUT parameters
         //parse_str(file_get_contents('php://input'), $put_vars);
 		$put_vars = json_decode(file_get_contents("php://input"),true);
-
-        switch($_GET['model'])
-        {
-            // Find respective model
-            case 'update': // {{{ 
-                $model = Share::model()->findByPk($_GET['id']);                    
-                break; // }}} 
-            default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
-                exit; // }}} 
-        }
-        if(is_null($model))
-            $this->_sendResponse(400, sprintf("Error: Didn't find any model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
-        
-        // Try to assign PUT parameters to attributes
-        foreach($put_vars as $var=>$value) {
-            // Does model have this attribute?
-            if($model->hasAttribute($var)) {
-                $model->$var = $value;
-            } else {
-                // No, raise error
-                $this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
-            }
-        }
-        // Try to save the model
-        if($model->save()) {
-            $this->_sendResponse(200, sprintf('The model [%s] with id [%s] has been updated.', $_GET['model'], $_GET['id']) );
-        } else {
-            $msg = "<h1>Error</h1>";
-            $msg .= sprintf("Couldn't update model [%s]", $_GET['model']);
-            $msg .= "<ul>";
-            foreach($model->errors as $attribute=>$attr_errors) {
-                $msg .= "<li>Attribute: $attribute</li>";
-                $msg .= "<ul>";
-                foreach($attr_errors as $attr_error) {
-                    $msg .= "<li>$attr_error</li>";
-                }        
-                $msg .= "</ul>";
-            }
-            $msg .= "</ul>";
-            $this->_sendResponse(500, $msg );
-        }
+		if(intval($put_vars['user_id']) && intval($put_vars['share_id'])){
+			switch($_GET['model'])
+			{
+				// Find respective model
+				case 'update': // {{{ 
+					$user_id = intval($put_vars['user_id']);
+					$share_id = intval($put_vars['share_id']);
+					$put_vars['owner_uid'] = intval($user_id);
+					unset($put_vars['user_id']);
+					// Find the share by user_id and obj_id
+					$model = Share::model()->find('owner_uid=:user_id AND share_id=:share_id', array(':user_id'=>$user_id, ':share_id'=>$share_id));                  
+					break; // }}} 
+				default: // {{{ 
+					$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+					exit; // }}} 
+			}
+			if(is_null($model))
+				$this->_sendResponse(400, sprintf("Error: Didn't find any item.") );
+			
+			// Try to assign PUT parameters to attributes
+			foreach($put_vars as $var=>$value) {
+				// Does model have this attribute?
+				if($model->hasAttribute($var)) {
+					$model->$var = $value;
+				} else {
+					// No, raise error
+					$this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
+				}
+			}
+			// Try to save the model
+			if($model->save()) {
+				$this->_sendResponse(200, sprintf('The share has been updated.') );
+			} else {
+				$msg = "<h1>Error</h1>";
+				$msg .= sprintf("Couldn't update model [%s]", $_GET['model']);
+				$msg .= "<ul>";
+				foreach($model->errors as $attribute=>$attr_errors) {
+					$msg .= "<li>Attribute: $attribute</li>";
+					$msg .= "<ul>";
+					foreach($attr_errors as $attr_error) {
+						$msg .= "<li>$attr_error</li>";
+					}        
+					$msg .= "</ul>";
+				}
+				$msg .= "</ul>";
+				$this->_sendResponse(500, $msg );
+			}
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Parameter user_id and share_id is required') );
+			exit;
+		}
     } // }}} 
     // {{{ actionDelete
     /**
@@ -170,29 +193,39 @@ class ShareController extends Controller
     public function actionDelete()
     {
         //$this->_checkAuth();
-
-        switch($_GET['model'])
-        {
-            // Load the respective model
-            case 'delete': // {{{ 
-                $model = Share::model()->findByPk($_GET['id']);                    
-                break; // }}} 
-            default: // {{{ 
-                $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
-                exit; // }}} 
-        }
-        // Was a model found?
-        if(is_null($model)) {
-            // No, raise an error
-            $this->_sendResponse(400, sprintf("Error: Didn't find any model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
-        }
-
-        // Delete the model
-        $num = $model->delete();
-        if($num>0)
-            $this->_sendResponse(200, sprintf("Model [%s] with ID [%s] has been deleted.",$_GET['model'], $_GET['id']) );
-        else
-            $this->_sendResponse(500, sprintf("Error: Couldn't delete model [%s] with ID [%s].",$_GET['model'], $_GET['id']) );
+		$put_vars = json_decode(file_get_contents("php://input"),true);
+		if(intval($put_vars['user_id']) && intval($put_vars['share_id'])){
+			switch($_GET['model'])
+			{
+				// Load the respective model
+				case 'delete': // {{{ 
+					$user_id = intval($put_vars['user_id']);
+					$share_id = intval($put_vars['share_id']);
+					$put_vars['owner_uid'] = intval($user_id);
+					unset($put_vars['user_id']);
+					// Find the share by user_id and obj_id
+					$model = Share::model()->find('owner_uid=:user_id AND share_id=:share_id', array(':user_id'=>$user_id, ':share_id'=>$share_id));                  
+					break; // }}} 
+				default: // {{{ 
+					$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+					exit; // }}} 
+			}
+			// Was a model found?
+			if(is_null($model)) {
+				// No, raise an error
+				$this->_sendResponse(400, sprintf("Error: Didn't find any share.") );
+			}
+	
+			// Delete the model
+			$num = $model->delete();
+			if($num>0)
+				$this->_sendResponse(200, sprintf("The share has been deleted.") );
+			else
+				$this->_sendResponse(500, sprintf("Error: Couldn't delete the share.") );
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Parameter user_id and share_id is required') );
+			exit;
+		}
     } // }}} 
 	// {{{ _addShare
     /**
@@ -201,21 +234,14 @@ class ShareController extends Controller
      */
     public function _addShare($model = '')
     {
-        if(!empty($model)){
+        if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
+		if(intval($_POST['user_id']) && !empty($_POST['obj_id']) && !empty($_POST['obj_type'])){
 			// Try to assign POST values to attributes
-			if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
-			if(is_array($_POST)){
-				$share_name = trim($_POST['share_name']);
-				// Find the share by share_name
-				$share_info=Share::model()->find('share_name=:share_name', array(':share_name'=>$share_name));
-				if(!empty($share_info)){
-					$this->_sendResponse(501, sprintf('Error: Parameter share_name already exists') );
-					return;
-				}
-			}else{
-				$this->_sendResponse(501, sprintf('Error: Parameter is required') );
-				return;
-			}
+			$user_id = trim($_POST['user_id']);
+			$obj_id = trim($_POST['obj_id']);
+			$obj_type = trim($_POST['obj_type']);
+			$_POST['owner_uid'] = intval($user_id);
+			unset($_POST['user_id']);
 			foreach($_POST as $var=>$value) {
 				// Does the model have this attribute?
 				if($model->hasAttribute($var)) {
@@ -247,10 +273,94 @@ class ShareController extends Controller
 				return;
 			}
 		}else{
-			$this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
+			$this->_sendResponse(501, sprintf('Error: Parameter user_id,obj_id and obj_type is required') );
 			return;
 		}
-    } // }}}
+    } 
+	/**
+     * Post a new item
+     * @return void
+     */
+    public function _addShareToUser()
+    {
+        if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
+		if(!empty($_POST['user_ids']) && intval($_POST['share_id'])){
+			// Try to assign POST values to attributes
+			$share_arr = array();
+			$share_arr['share_id'] = intval($_POST['share_id']);
+			$share_arr['create_date'] = intval($_POST['create_date']);
+			$user_ids = trim($_POST['user_ids']);
+			$user_arr = explode(',',rtrim($user_ids,','));
+			$i = 0;
+			foreach($user_arr as $k=>$v){
+				$model = new ShareToUser;
+				$share_arr['user_id'] = intval($v);
+				// Find the item by user_id and share_id
+				$share_info = ShareToUser::model()->find('user_id=:user_id AND share_id=:share_id', array(':user_id'=>$share_arr['user_id'], ':share_id'=>$share_arr['share_id']));
+				if(empty($share_info)){
+					foreach($share_arr as $var=>$value) {
+						// Does the model have this attribute?
+						if($model->hasAttribute($var)) {
+							$model->$var = $value;
+						} else {
+							// No, raise an error
+							$this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
+						}
+					}
+				}
+				// Try to save the model
+				if($model->save()){
+					$i++;
+				}
+			}
+			$this->_sendResponse(200, sprintf('There are [%s] new items has been pushed.', $i) );
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Parameter share_id and user_ids is required') );
+			return;
+		}
+    }
+	/**
+     * Post a new item
+     * @return void
+     */
+    public function _addShareToGroup()
+    {
+        if(empty($_POST)){$_POST = json_decode(file_get_contents("php://input"),true);}
+		if(!empty($_POST['group_ids']) && intval($_POST['share_id'])){
+			// Try to assign POST values to attributes
+			$share_arr = array();
+			$share_arr['share_id'] = intval($_POST['share_id']);
+			$share_arr['create_date'] = intval($_POST['create_date']);
+			$group_ids = trim($_POST['group_ids']);
+			$group_arr = explode(',',rtrim($group_ids,','));
+			$i = 0;
+			foreach($group_arr as $k=>$v){
+				$model = new ShareToGroup;
+				$share_arr['group_id'] = intval($v);
+				// Find the item by group_id and share_id
+				$share_info = ShareToGroup::model()->find('group_id=:group_id AND share_id=:share_id', array(':group_id'=>$share_arr['group_id'], ':share_id'=>$share_arr['share_id']));
+				if(empty($share_info)){
+					foreach($share_arr as $var=>$value) {
+						// Does the model have this attribute?
+						if($model->hasAttribute($var)) {
+							$model->$var = $value;
+						} else {
+							// No, raise an error
+							$this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $_GET['model']) );
+						}
+					}
+				}
+				// Try to save the model
+				if($model->save()){
+					$i++;
+				}
+			}
+			$this->_sendResponse(200, sprintf('There are [%s] new items has been pushed.', $i) );
+		}else{
+			$this->_sendResponse(501, sprintf('Error: Parameter share_id and group_ids is required') );
+			return;
+		}
+    }// }}}
     // }}} End Actions
 }
 
