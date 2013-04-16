@@ -6,8 +6,8 @@
  * The followings are the available columns in table '{{share}}':
  * @property string $share_id
  * @property string $share_name
- * @property string $file_id
- * @property string $folder_id
+ * @property string $obj_id
+ * @property string $obj_type
  * @property integer $share_type
  * @property integer $owner_uid
  * @property integer $permission
@@ -47,13 +47,14 @@ class Share extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('share_name, share_type, owner_uid, permission, share_date', 'required'),
+			array('share_name, owner_uid, share_date', 'required'),
 			array('share_type, owner_uid, permission, share_date, expiration, download_date, download_nums', 'numerical', 'integerOnly'=>true),
-			array('share_name, file_id, folder_id, token, share_link', 'length', 'max'=>255),
+			array('share_name, obj_id, token, share_link', 'length', 'max'=>255),
+			array('obj_type', 'length', 'max'=>6),
 			array('is_deleted', 'length', 'max'=>5),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('share_id, share_name, file_id, folder_id, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link, is_deleted', 'safe', 'on'=>'search'),
+			array('share_id, share_name, obj_id, obj_type, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link, is_deleted', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,8 +77,8 @@ class Share extends CActiveRecord
 		return array(
 			'share_id' => 'Share',
 			'share_name' => 'Share Name',
-			'file_id' => 'File',
-			'folder_id' => 'Folder',
+			'obj_id' => 'Obj',
+			'obj_type' => 'Obj Type',
 			'share_type' => 'Share Type',
 			'owner_uid' => 'Owner Uid',
 			'permission' => 'Permission',
@@ -104,8 +105,8 @@ class Share extends CActiveRecord
 
 		$criteria->compare('share_id',$this->share_id,true);
 		$criteria->compare('share_name',$this->share_name,true);
-		$criteria->compare('file_id',$this->file_id,true);
-		$criteria->compare('folder_id',$this->folder_id,true);
+		$criteria->compare('obj_id',$this->obj_id,true);
+		$criteria->compare('obj_type',$this->obj_type,true);
 		$criteria->compare('share_type',$this->share_type);
 		$criteria->compare('owner_uid',$this->owner_uid);
 		$criteria->compare('permission',$this->permission);

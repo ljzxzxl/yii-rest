@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 15 日 19:06
+-- 生成日期: 2013 年 04 月 16 日 17:36
 -- 服务器版本: 5.1.58-log
 -- PHP 版本: 5.3.10
 
@@ -258,11 +258,11 @@ INSERT INTO `yxz_pref` (`pref_id`, `pref_key`, `pref_name`, `pref_value`, `user_
 CREATE TABLE IF NOT EXISTS `yxz_share` (
   `share_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `share_name` varchar(255) NOT NULL COMMENT '分享名称',
-  `file_id` varchar(255) DEFAULT NULL COMMENT '文件id',
-  `folder_id` varchar(255) DEFAULT NULL COMMENT '文件夹id',
-  `share_type` int(11) NOT NULL COMMENT '分享类型',
+  `obj_id` varchar(255) DEFAULT NULL COMMENT '对象id',
+  `obj_type` enum('file','folder','other') DEFAULT 'other' COMMENT '对象类型',
+  `share_type` int(11) DEFAULT NULL COMMENT '分享类型',
   `owner_uid` int(11) NOT NULL COMMENT '所有者用户id',
-  `permission` int(11) NOT NULL COMMENT '权限',
+  `permission` int(11) DEFAULT NULL COMMENT '权限',
   `share_date` int(11) NOT NULL COMMENT '分享日期',
   `expiration` int(11) DEFAULT NULL COMMENT '过期',
   `token` varchar(255) DEFAULT NULL COMMENT '标记',
@@ -271,15 +271,15 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
   `share_link` varchar(255) DEFAULT NULL COMMENT '分享链接',
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- 转存表中的数据 `yxz_share`
 --
 
-INSERT INTO `yxz_share` (`share_id`, `share_name`, `file_id`, `folder_id`, `share_type`, `owner_uid`, `permission`, `share_date`, `expiration`, `token`, `download_date`, `download_nums`, `share_link`, `is_deleted`) VALUES
-(1, '测试分享', '1,2,3', '0', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false'),
-(2, '测试分享二', '2', '1', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false');
+INSERT INTO `yxz_share` (`share_id`, `share_name`, `obj_id`, `obj_type`, `share_type`, `owner_uid`, `permission`, `share_date`, `expiration`, `token`, `download_date`, `download_nums`, `share_link`, `is_deleted`) VALUES
+(1, '测试分享', '1,2,3', 'file', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false'),
+(2, '测试分享二', '2', 'folder', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false');
 
 -- --------------------------------------------------------
 
@@ -288,10 +288,9 @@ INSERT INTO `yxz_share` (`share_id`, `share_name`, `file_id`, `folder_id`, `shar
 --
 
 CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
-  `share_id` int(11) unsigned NOT NULL,
+  `share_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL COMMENT '组id',
-  `create_date` int(11) NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`share_id`)
+  `create_date` int(11) NOT NULL COMMENT '创建日期'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
@@ -299,7 +298,13 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_group` (
 --
 
 INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`) VALUES
-(1, 1, 1365755861);
+(1, 1, 1366102827),
+(1, 2, 1366102827),
+(1, 3, 1366102827),
+(1, 4, 1366102827),
+(1, 5, 1366102827),
+(1, 6, 1366102827),
+(1, 7, 1366102827);
 
 -- --------------------------------------------------------
 
@@ -308,10 +313,9 @@ INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `yxz_share_to_user` (
-  `share_id` int(11) unsigned NOT NULL,
+  `share_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL COMMENT '用户id',
-  `create_date` int(11) NOT NULL COMMENT '创建日期',
-  PRIMARY KEY (`share_id`)
+  `create_date` int(11) NOT NULL COMMENT '创建日期'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
@@ -319,8 +323,11 @@ CREATE TABLE IF NOT EXISTS `yxz_share_to_user` (
 --
 
 INSERT INTO `yxz_share_to_user` (`share_id`, `user_id`, `create_date`) VALUES
-(1, 1, 1365755861),
-(2, 1, 1365756109);
+(1, 5, 1366102827),
+(1, 4, 1366102827),
+(1, 3, 1366102827),
+(1, 2, 1366102827),
+(1, 1, 1366102827);
 
 -- --------------------------------------------------------
 
@@ -373,7 +380,15 @@ CREATE TABLE IF NOT EXISTS `yxz_user_favorite` (
   `memo` varchar(255) NOT NULL COMMENT '用户备注',
   `create_date` int(11) NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `yxz_user_favorite`
+--
+
+INSERT INTO `yxz_user_favorite` (`id`, `user_id`, `file_id`, `memo`, `create_date`) VALUES
+(1, 1, 1, '测试备注', 1366025213),
+(2, 1, 2, '测试备注二', 1366025225);
 
 -- --------------------------------------------------------
 

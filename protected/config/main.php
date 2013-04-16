@@ -131,9 +131,9 @@ return array(
 						
 						array('share/list', 'pattern'=>'share/<model:\w+>', 'verb'=>'GET'),
 						array('share/post', 'pattern'=>'share/<model:\w+>', 'verb'=>'POST'),
-						array('share/view', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
-						array('share/update', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
-						array('share/delete', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
+						array('share/get', 'pattern'=>'share/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
+						array('share/update', 'pattern'=>'share/<model:\w+>', 'verb'=>'PUT'),
+						array('share/delete', 'pattern'=>'share/<model:\w+>', 'verb'=>'DELETE'),
 						
 						array('workspace/list', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'GET'),
 						array('workspace/post', 'pattern'=>'workspace/<model:\w+>', 'verb'=>'POST'),

@@ -4,7 +4,7 @@
  * This is the model class for table "{{share_to_user}}".
  *
  * The followings are the available columns in table '{{share_to_user}}':
- * @property string $share_id
+ * @property integer $share_id
  * @property integer $user_id
  * @property integer $create_date
  */
@@ -37,8 +37,7 @@ class ShareToUser extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('share_id, user_id, create_date', 'required'),
-			array('user_id, create_date', 'numerical', 'integerOnly'=>true),
-			array('share_id', 'length', 'max'=>11),
+			array('share_id, user_id, create_date', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('share_id, user_id, create_date', 'safe', 'on'=>'search'),
@@ -79,7 +78,7 @@ class ShareToUser extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('share_id',$this->share_id,true);
+		$criteria->compare('share_id',$this->share_id);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('create_date',$this->create_date);
 
