@@ -49,9 +49,10 @@ class Share extends CActiveRecord
 		return array(
 			array('share_name, owner_uid, share_date', 'required'),
 			array('share_type, owner_uid, permission, share_date, expiration, download_date, download_nums', 'numerical', 'integerOnly'=>true),
-			array('share_name, obj_id, token, share_link', 'length', 'max'=>255),
+			array('share_name, obj_id, token', 'length', 'max'=>255),
 			array('obj_type', 'length', 'max'=>6),
 			array('is_deleted', 'length', 'max'=>5),
+			array('share_link', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('share_id, share_name, obj_id, obj_type, share_type, owner_uid, permission, share_date, expiration, token, download_date, download_nums, share_link, is_deleted', 'safe', 'on'=>'search'),

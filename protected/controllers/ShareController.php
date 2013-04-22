@@ -103,7 +103,6 @@ class ShareController extends Controller
         {
             // Get an instance of the respective model
             case 'create': // {{{ 
-                $model = new Share;  
 				$this->_addShare($model);
                 break; // }}} 
 			case 'toUser': // {{{ 
@@ -242,6 +241,7 @@ class ShareController extends Controller
 			$obj_type = trim($_POST['obj_type']);
 			$_POST['owner_uid'] = intval($user_id);
 			unset($_POST['user_id']);
+			$model = new Share;
 			foreach($_POST as $var=>$value) {
 				// Does the model have this attribute?
 				if($model->hasAttribute($var)) {
@@ -254,6 +254,41 @@ class ShareController extends Controller
 			// Try to save the model
 			if($model->save()) {
 				// Saving was OK
+				$share_info = $model->attributes;
+				$share_id = $share_info['share_id'];
+				// When other type 当是对外分享时需执行
+				if($obj_type == 'other'){
+					$obj_arr = explode(',',rtrim($share_info['obj_id'],','));
+					foreach($obj_arr as $k=>$v){
+						$other_model = new ShareToOther;
+						$file_id = $v;
+						$file_info = File::model()->findByPk($file_id);
+						$file_path = $file_info['path'];
+						$share_arr = array();
+						$share_arr['share_id'] = $share_id;
+						$share_arr['file_id'] = $file_id;
+						$share_arr['share_link'] = $file_path;
+						$share_arr['create_date'] = time();
+						$share_data = ShareToOther::model()->find('file_id=:file_id AND share_id=:share_id', array(':file_id'=>$share_arr['file_id'], ':share_id'=>$share_arr['share_id']));
+						if(empty($share_data)){
+							foreach($share_arr as $var=>$value) {
+								// Does the model have this attribute?
+								if($other_model->hasAttribute($var)) {
+									$other_model->$var = $value;
+								} else {
+									// No, raise an error
+									$this->_sendResponse(500, sprintf('Parameter [%s] is not allowed for model [%s]', $var, $other_model) );
+								}
+							}
+						}
+						// Try to save the model
+						$other_model->save();
+						$share_info['share_link'] .= $share_arr['share_link'].',';
+					}
+					$share_info['share_link'] = rtrim($share_info['share_link'],',');
+					$model->share_link = $share_info['share_link'];
+					$model->save();
+				}
 				$this->_sendResponse(200, $model->attributes);
 			} else {
 				// Errors occurred
