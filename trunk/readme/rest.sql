@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 16 日 17:36
+-- 生成日期: 2013 年 04 月 22 日 18:52
 -- 服务器版本: 5.1.58-log
 -- PHP 版本: 5.3.10
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`file_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `yxz_file`
@@ -126,7 +126,8 @@ CREATE TABLE IF NOT EXISTS `yxz_file` (
 
 INSERT INTO `yxz_file` (`file_id`, `file_name`, `path`, `folder_id`, `owner_uid`, `file_size`, `file_path`, `create_date`, `update_date`, `update_uid`, `mime_type`, `hash`, `create_uid`, `create_uname`, `company_id`, `version_id`, `is_deleted`, `sort`) VALUES
 (1, '测试文件名', '/www/htdocs/yii-rest/readme', 1, 1, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'true', NULL),
-(2, '测试文件名二', '/www/htdocs/yii-rest/readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'true', NULL);
+(2, '测试文件名二', '/www/htdocs/yii-rest/readme', 2, 2, 1024, '', 1364894003, 1364894003, NULL, '1364894003', 'DODESTCOLUMNE', 1, 'admin', 0, NULL, 'true', NULL),
+(3, '测试文件名三', '/www/htdocs/yii-rest/readme123', 3, 3, 1024, NULL, 1366621136, NULL, NULL, '1366621136', NULL, 1, 'admin', NULL, NULL, 'false', NULL);
 
 -- --------------------------------------------------------
 
@@ -268,10 +269,10 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
   `token` varchar(255) DEFAULT NULL COMMENT '标记',
   `download_date` int(11) DEFAULT NULL COMMENT '下载日期',
   `download_nums` int(11) DEFAULT NULL COMMENT '下载次数',
-  `share_link` varchar(255) DEFAULT NULL COMMENT '分享链接',
+  `share_link` text COMMENT '分享链接',
   `is_deleted` enum('true','false') DEFAULT 'false' COMMENT '是否被删除',
   PRIMARY KEY (`share_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `yxz_share`
@@ -279,7 +280,12 @@ CREATE TABLE IF NOT EXISTS `yxz_share` (
 
 INSERT INTO `yxz_share` (`share_id`, `share_name`, `obj_id`, `obj_type`, `share_type`, `owner_uid`, `permission`, `share_date`, `expiration`, `token`, `download_date`, `download_nums`, `share_link`, `is_deleted`) VALUES
 (1, '测试分享', '1,2,3', 'file', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false'),
-(2, '测试分享二', '2', 'folder', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false');
+(2, '测试分享二', '2', 'folder', 0, 1, 1, 1364895640, NULL, NULL, 1364895640, 20, 'http://t.cn/zT2UoOP', 'false'),
+(3, '测试分享', '1,2,3', 'other', NULL, 1, 1, 1364895640, NULL, NULL, NULL, NULL, 'http://t.cn/zT2UoOP', 'false'),
+(4, '测试分享', '1,2,3', 'other', NULL, 1, 1, 1364895640, NULL, NULL, NULL, NULL, '/www/htdocs/yii-rest/readme,/www/htdocs/yii-rest/readme,/www/htdocs/yii-rest/readme123', 'false'),
+(5, '测试分享', '1,2,3', 'file', NULL, 1, 1, 1364895640, NULL, NULL, NULL, NULL, NULL, 'false'),
+(6, '测试分享', '1,2,3', 'file', NULL, 1, 1, 1364895640, NULL, NULL, NULL, NULL, NULL, 'false'),
+(7, '测试分享', '1,2,3', 'other', NULL, 1, 1, 1364895640, NULL, NULL, NULL, NULL, '/www/htdocs/yii-rest/readme,/www/htdocs/yii-rest/readme,/www/htdocs/yii-rest/readme123', 'false');
 
 -- --------------------------------------------------------
 
@@ -305,6 +311,32 @@ INSERT INTO `yxz_share_to_group` (`share_id`, `group_id`, `create_date`) VALUES
 (1, 5, 1366102827),
 (1, 6, 1366102827),
 (1, 7, 1366102827);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `yxz_share_to_other`
+--
+
+CREATE TABLE IF NOT EXISTS `yxz_share_to_other` (
+  `share_id` int(11) NOT NULL,
+  `file_id` int(11) NOT NULL COMMENT '文件id',
+  `share_link` varchar(255) DEFAULT NULL COMMENT '分享链接',
+  `download_nums` int(11) DEFAULT NULL COMMENT '下载次数',
+  `create_date` int(11) NOT NULL COMMENT '创建日期'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `yxz_share_to_other`
+--
+
+INSERT INTO `yxz_share_to_other` (`share_id`, `file_id`, `share_link`, `download_nums`, `create_date`) VALUES
+(7, 3, '/www/htdocs/yii-rest/readme123', NULL, 1366626682),
+(7, 2, '/www/htdocs/yii-rest/readme', NULL, 1366626682),
+(7, 1, '/www/htdocs/yii-rest/readme', NULL, 1366626682),
+(4, 3, '/www/htdocs/yii-rest/readme123', NULL, 1366626532),
+(4, 2, '/www/htdocs/yii-rest/readme', NULL, 1366626532),
+(4, 1, '/www/htdocs/yii-rest/readme', NULL, 1366626532);
 
 -- --------------------------------------------------------
 
