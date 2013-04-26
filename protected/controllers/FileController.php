@@ -35,7 +35,7 @@ class FileController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = File::model()->findAll();
+                $models = File::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

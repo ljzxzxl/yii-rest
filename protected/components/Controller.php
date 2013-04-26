@@ -22,10 +22,11 @@ class Controller extends CController
 	public $breadcrumbs=array();
 
 	/**
-	 * Controller language init
+	 * Controller autoload
 	 */
 	public function init()
 	{
+		// language settings
 		if(isset($_GET['lang']) && $_GET['lang'] != "")
 		{
 			Yii::app()->language = $_GET['lang'];
@@ -42,7 +43,22 @@ class Controller extends CController
 			Yii::app()->language = strtolower(str_replace('-', '_', $lang[0]));
 		}
 	}
-
+	/**
+	 * Returns AR select limit
+	 * @return string
+	 */
+	public function _getLimit()
+	{
+		// page settings
+		$default_page = 1;
+		$default_size = 10;
+		$page = intval($_GET['page'])?$_GET['page']:$default_page;
+		$size = intval($_GET['pagesize'])?$_GET['pagesize']:$default_pagesize;
+		$pagenum = $page < 1?$default_page:$page;
+		$pagesize = $size < 1?$default_size:$size;
+		$start = ($pagenum - 1) * $pagesize;
+		return " 1 LIMIT {$start},{$pagesize} ";
+	}
 	// {{{ Common Methods
     // {{{ _sendResponse
     /**
