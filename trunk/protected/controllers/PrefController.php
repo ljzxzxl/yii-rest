@@ -35,7 +35,7 @@ class PrefController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Pref::model()->findAll();
+                $models = Pref::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

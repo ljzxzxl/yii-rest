@@ -35,7 +35,7 @@ class FolderController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Folder::model()->findAll();
+                $models = Folder::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

@@ -35,7 +35,7 @@ class GroupController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Group::model()->findAll();
+                $models = Group::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
@@ -58,13 +58,13 @@ class GroupController extends Controller
         switch($_GET['model'])
         {
             case 'user': // {{{ 
-                $models = User::model()->findAll();
+                $models = User::model()->findAll($this->_getLimit());
                 break; // }}}
 			case 'file': // {{{ 
-                $models = File::model()->findAll();
+                $models = File::model()->findAll($this->_getLimit());
                 break; // }}}
             case 'folder': // {{{ 
-                $models = Folder::model()->findAll();
+                $models = Folder::model()->findAll($this->_getLimit());
                 break; // }}}
 			default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

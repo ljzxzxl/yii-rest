@@ -36,7 +36,7 @@ class WorkspaceController extends Controller
         {
             case 'list': // {{{ 
 				if(empty($_GET['company_id'])){
-					$models = Workspace::model()->findAll();
+					$models = Workspace::model()->findAll($this->_getLimit());
 				}else{
 					$models = Workspace::model()->findAll('company_id=:company_id', array(':company_id'=>$_GET['company_id']));
 				}
@@ -62,10 +62,10 @@ class WorkspaceController extends Controller
         switch($_GET['model'])
         {
             case 'user': // {{{ 
-                $models = User::model()->findAll();
+                $models = User::model()->findAll($this->_getLimit());
                 break; // }}}
 			case 'folder': // {{{ 
-                $models = Folder::model()->findAll();
+                $models = Folder::model()->findAll($this->_getLimit());
                 break; // }}}
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

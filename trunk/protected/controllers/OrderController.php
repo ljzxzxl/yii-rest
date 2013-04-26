@@ -35,7 +35,7 @@ class OrderController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = Order::model()->findAll();
+                $models = Order::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );

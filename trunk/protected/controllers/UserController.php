@@ -36,7 +36,7 @@ class UserController extends Controller
         switch($_GET['model'])
         {
             case 'list': // {{{ 
-                $models = User::model()->findAll();
+                $models = User::model()->findAll($this->_getLimit());
                 break; // }}} 
             default: // {{{ 
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
