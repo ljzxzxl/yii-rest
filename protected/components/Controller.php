@@ -50,9 +50,11 @@ class Controller extends CController
 	public function _getLimit()
 	{
 		// page settings
-		$default_page = 1;
-		$default_size = 10;
+		$default_page = $page = 1;
+		$default_size = $size= 10;
+		if(isset($_GET['page']))
 		$page = intval($_GET['page'])?$_GET['page']:$default_page;
+		if(isset($_GET['pagesize']))
 		$size = intval($_GET['pagesize'])?$_GET['pagesize']:$default_pagesize;
 		$pagenum = $page < 1?$default_page:$page;
 		$pagesize = $size < 1?$default_size:$size;
