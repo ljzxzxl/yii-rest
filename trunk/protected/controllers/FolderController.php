@@ -57,9 +57,11 @@ class FolderController extends Controller
         //$this->_checkAuth();
         switch($_GET['model'])
         {
-            case 'file': // {{{ 
+            case 'obj': // {{{ 
 				if(intval($_GET['folder_id'])){
-					$models = File::model()->findAll('folder_id=:folder_id', array(':folder_id'=>$_GET['folder_id']));
+					//Get file and folder
+					$models_file = File::model()->findAll("is_deleted = :is_deleted AND folder_id=:folder_id", array(':is_deleted'=>'false', ':folder_id'=>$_GET['folder_id']));
+					$models_folder = Folder::model()->findAll("is_deleted = :is_deleted AND parent_id=:parent_id", array(':is_deleted'=>'false', ':parent_id'=>$_GET['folder_id']));
 				}else{
 					$this->_sendResponse(401, 'Error: Parameter folder_id is required');
 				}
@@ -68,14 +70,15 @@ class FolderController extends Controller
                 $this->_sendResponse(501, sprintf('Error: Wrong mode [%s] or Bad request method',$_GET['model']) );
                 exit; // }}} 
         }
-        if(is_null($models)) {
+        if(empty($models_file) && empty($models_folder)) {
             $this->_sendResponse(200, sprintf('No items where found for model [%s]', $_GET['model']) );
         } else {
             $rows = array();
-            foreach($models as $model)
-                $rows[] = $model->attributes;
-
-            $this->_sendResponse(200, $rows);
+			foreach($models_file as $model)
+				$rows['file'][] = $model->attributes;
+			foreach($models_folder as $model)
+				$rows['folder'][] = $model->attributes;
+			$this->_sendResponse(200, $rows);
         }
     } // }}}
     // {{{ actionView
